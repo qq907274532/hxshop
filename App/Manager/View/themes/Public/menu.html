@@ -1,0 +1,76 @@
+<div class="main-container" id="main-container">
+	
+
+	<div class="main-container-inner">
+		<a class="menu-toggler" id="menu-toggler" href="#">
+			<span class="menu-text"></span>
+		</a>
+
+		<div class="sidebar" id="sidebar">
+			
+
+			<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+				<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+					<button class="btn btn-success">
+						<i class="icon-signal"></i>
+					</button>
+
+					<button class="btn btn-info">
+						<i class="icon-pencil"></i>
+					</button>
+
+					<button class="btn btn-warning">
+						<i class="icon-group"></i>
+					</button>
+
+					<button class="btn btn-danger">
+						<i class="icon-cogs"></i>
+					</button>
+				</div>
+
+				<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+					<span class="btn btn-success"></span>
+
+					<span class="btn btn-info"></span>
+
+					<span class="btn btn-warning"></span>
+
+					<span class="btn btn-danger"></span>
+				</div>
+			</div><!-- #sidebar-shortcuts -->
+
+			<ul class="nav nav-list">
+			 <li <if condition=" CONTROLLER_NAME eq 'Index'"> class="active"</if>>
+                <a href="{:U('Index/index')}">
+                    <i class="icon-dashboard"></i> <span class="menu-text">首页</span> <span class="selected"></span>
+                </a>
+             </li>
+			
+				
+			<volist name="menus" id="vo">
+				<li <if condition="$openFirstId eq $vo['id']" > class="active open" </if>>
+					<a href="#" class="dropdown-toggle">
+						<i class="{$vo.icon}"></i>
+						<span class="menu-text"> {$vo.title}</span>
+
+						<b class="arrow icon-angle-down"></b>
+					</a>
+
+					<ul class="submenu">
+					<volist name="vo.child" id="v">
+						<li <if condition="$v['id'] eq $open"> class="active"</if>>
+							<a href="{$v.urls}">
+								<i class="icon-double-angle-right"></i>
+								{$v.title}
+							</a>
+						</li>
+					</volist>	
+						
+					</ul>
+				</li>
+
+		</volist>
+			</ul><!-- /.nav-list -->
+
+			
+		</div>

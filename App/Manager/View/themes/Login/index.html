@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>{:C('COMM_TITLE')}</title>
+
+    <meta name="description" content="User login page" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- basic styles -->
+
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/font-awesome.min.css" />
+
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/font-awesome-ie7.min.css" />
+    <![endif]-->
+
+    <!-- page specific plugin styles -->
+
+    <!-- fonts -->
+
+    <!-- ace styles -->
+
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/ace.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/ace-rtl.min.css" />
+
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="__PUBLIC__/admin/css/ace-ie.min.css" />
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+    <!--[if lt IE 9]>
+    <script src="__PUBLIC__/admin/js/html5shiv.js"></script>
+    <script src="__PUBLIC__/admin/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="login-layout">
+<div class="main-container">
+    <div class="main-content">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="login-container">
+                    <div class="center">
+                        <h1>
+                            <i class="icon-leaf green"></i>
+                            <span class="red">易名轩</span>
+                            <span class="white">平台</span>
+                        </h1>
+                       
+                    </div>
+
+                    <div class="space-6"></div>
+
+                    <div class="position-relative">
+                        <div id="login-box" class="login-box visible widget-box no-border">
+                            <div class="widget-body">
+                                <div class="widget-main">
+                                    <h4 class="header blue lighter bigger">
+                                        <i class="icon-coffee green"></i>
+                                        登录平台
+                                    </h4>
+
+                                    <div class="space-6"></div>
+
+                                    <form>
+                                       
+                                           <div class="form-group  ">
+                                                <label class="control-label" >邮箱：</label>
+                                                <input type="text" id="email" class="form-control" name="email" value="" placeholder="邮箱">
+
+                                                <div class="help-block"></div>
+                                                </div>
+                                        <div class="form-group ">
+                                            <label class="control-label" >密码：</label>
+                                            <input type="password" id="password" class="form-control" name="password" value="" placeholder="密码">
+
+                                            <div class="help-block"></div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <label class="control-label" >验证码：</label>
+                                            <input type="text"  class="form-control " name="verify" style="width:60%;" placeholder="验证码">
+                                            <img src="{:U('Login/verify')}" id="verify"
+                                                    style="cursor: pointer;float: right;margin-top: -34px;height: 32px;width: 38%"/>
+                                            <div class="help-block"></div>
+                                        </div>
+
+                                            <div class="space"></div>
+
+                                            <div class="clearfix">
+                                                
+                                                <button type="button" class="width-35 pull-right btn btn-sm btn-primary" id="submit">
+                                                   
+                                                    登录
+                                                </button>
+                                            </div>
+
+                                            <div class="space-4"></div>
+                                       
+                                    </form>
+
+                                  
+
+                                </div><!-- /widget-main -->
+
+                                <div class="toolbar clearfix">
+                                    <div>
+                                        <a href="#"  class="forgot-password-link">
+
+                                        </a>
+                                    </div>
+
+                                    <div>
+                                        <a href="#"  class="user-signup-link">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div><!-- /widget-body -->
+                        </div><!-- /login-box -->
+
+                     
+                    </div><!-- /position-relative -->
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+</div><!-- /.main-container -->
+
+
+
+
+<script charset="utf-8" src="__PUBLIC__/admin/js/jquery-2.0.3.min.js"></script>
+<script charset="utf-8" src="__PUBLIC__/admin/js/jquery-1.10.2.min.js"></script>
+<script charset="utf-8" src="__PUBLIC__/admin/js/jquery.mobile.custom.min.js"></script>
+<script charset="utf-8" src="__PUBLIC__/layer/layer.js"></script>
+<script src="__PUBLIC__/admin/js/script.js"></script>
+
+
+<!-- inline scripts related to this page -->
+
+<script type="text/javascript">
+    $(function(){
+        $("#verify").click(function(){
+            var src="{:U('Login/verify','','')}";
+            var urlSrc=src+'/id/'+Math.random();
+            $(this).attr('src',urlSrc);
+
+        });
+        $("#submit").click(function(){
+            var email=$("input[name='email']").val();
+            var password=$("input[name='password']").val();
+            var verify=$("input[name='verify']").val();
+            var reg = /\w+[@]{1}\w+[.]\w+/;
+            if(!reg.test(email)) {
+                throwExc("邮箱格式不正确")
+                return false;
+            }
+            if(password=='') {
+                throwExc("密码必须填写")
+                return false;
+            }
+            if(verify=='') {
+                throwExc("验证码必须填写")
+                return false;
+            }
+            $.post("{:U('Login/index')}",{
+                "email":email,
+                "password":password,
+                "verify":verify
+            },function( response ){
+                if(response.error==100) {
+                    throwExc(response.message);
+                    var src="{:U('Login/verify','','')}";
+                    var urlSrc=src+'/id/'+Math.random();
+                    $("#verify").attr('src',urlSrc);
+                    return false;
+                }else if(response.error==200) {
+                    showSucc(response.message);
+
+                    setTimeout("load()",1100);
+                }
+            },"json");
+
+        });
+    });
+    function load(){
+        window.location.href="{:U('Index/index')}";
+    }
+</script>
+</body>
+</html>
